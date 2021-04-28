@@ -10,5 +10,16 @@
 
     <include
         layout="@layout/bar_offline_activity_try"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_view"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_offline_activity_try"
+        app:menu="@menu/activity_offline_try_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
