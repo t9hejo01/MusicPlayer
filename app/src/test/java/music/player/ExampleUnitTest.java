@@ -1,4 +1,4 @@
-package music.palyer;
+package music.player;
 
 import org.junit.Test;
 
