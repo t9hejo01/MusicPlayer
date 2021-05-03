@@ -17,27 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-
-        <service android:name=".MediaPlayerService" />
-
-        <activity android:name=".MediaActivity" />
-        <activity android:name=".OfflineActivity" />
-
         <activity
-            android:name=".OfflineActivityTry"
-            android:label="@string/title_activity_offline_try"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".PlayLists"
-            android:label="@string/title_activity_play_lists"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Pedometer"
-            android:label="@string/title_activity_pedometer"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TrackPedo"
-            android:label="@string/title_track_pedo"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginFirebase"
+            android:name=".LoginFirebase"
             android:label="@string/title_activity_login_firebase"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -46,7 +27,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SetSilentPhone"></activity>
+        <activity android:name=".MainActivity" />
+
+        <service android:name=".MediaPlayerService" />
+
+        <activity android:name=".MediaActivity" />
+        <activity android:name=".OfflineActivity" />
+        <activity
+            android:name=".OfflineActivityTry"
+            android:label="@string/title_activity_offline_try"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PlayLists"
+            android:label="@string/title_activity_play_lists"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Pedometer"
+            android:label="@string/title_activity_pedometer"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TrackPedo"
+            android:label="@string/title_track_pedo"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SetSilentPhone" />
     </application>
 
 </manifest>
