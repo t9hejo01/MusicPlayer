@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".MediaActivity"></activity>
         <activity
             android:name=".LoginFirebase"
             android:label="@string/title_activity_login_firebase"
@@ -31,7 +32,6 @@
 
         <service android:name=".MediaPlayerService" />
 
-        <activity android:name=".MediaActivity" />
         <activity android:name=".OfflineActivity" />
         <activity
             android:name=".OfflineActivityTry"
