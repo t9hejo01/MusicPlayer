@@ -28,6 +28,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+    google()
+}
 
 dependencies {
 
@@ -41,6 +47,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services:8.3.0'
     implementation 'com.google.android.gms.play-services-auth:19.0.0'
     implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'com.github.iammert:InteractivePlayerView:f4f6490290'
     implementation 'com.google.firebase:firebase-core:9.4.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
