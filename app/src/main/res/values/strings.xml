@@ -24,5 +24,20 @@
     <string name="username">username</string>
     <string name="passwordAgain">passwordAgain</string>
     <string name="register">register</string>
+    <string name="usernameEmpty">usernameEmpty</string>
+    <string name="emailError">emailError</string>
+    <string name="passwordLength">8</string>
+    <string name="passwordEmpty">passwordEmpty</string>
+    <string name="passwordNotMatch">passwordNotMatch</string>
+    <string name="registerCompleteToast">registerCompleteToast</string>
+    <string name="registerProblem">registerProblem</string>
+    <string name="emailTaken">emailTaken</string>
+    <string name="usernameTaken">usernameTaken</string>
+    <string name="changePassword">changePassword</string>
+    <string name="reauthenticateToSeeInformation">reauthenticateToSeeInformation</string>
+    <string name="passwordUpdateSuccess">updateSuccess</string>
+    <string name="passwordUpdateFailed">passwordUpdateFailed</string>
+    <string name="cantFindUserInformation">cantFindUserInformation</string>
+    <string name="usernameNoSpaces">usernameNoSpaces</string>
 
 </resources>

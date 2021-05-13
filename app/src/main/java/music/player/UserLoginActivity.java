@@ -153,12 +153,13 @@ public class UserLoginActivity extends AppCompatActivity {
 
     private void checkIfUserHasCreatedAccount() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
         email = user.getEmail();
         Intent intent = new Intent(this, UserDatabase.class);
         Bundle extras = new Bundle();
         extras.putInt("requestCode", checkIfEmailTaken);
         extras.putString("email", email);
-        intent.putExtra(extras);
+        intent.putExtras(extras);
         startActivityForResult(intent, checkIfEmailTaken);
     }
 

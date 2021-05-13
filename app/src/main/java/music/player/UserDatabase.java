@@ -75,7 +75,7 @@ public class UserDatabase extends AppCompatActivity {
                             }
                         }
                     } else {
-                        Log.e("Error getting documents.", task.getException());
+                        Log.e("Error getting documents.", String.valueOf(task.getException()));
                     }
                 });
     }
