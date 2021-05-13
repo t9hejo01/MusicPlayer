@@ -8,5 +8,36 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_play_lists">PlayLists</string>
     <string name="title_activity_login_firebase">LoginFirebase</string>
+    <string name="default_web_client_id" />
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="loginButton">"loginButton "</string>
+    <string name="loginGoogle">loginGoogle</string>
+    <string name="registerButton">registerButton</string>
+    <string name="loginCompleteToast" />
+    <string name="emailSend" />
+    <string name="openEmailApp" />
+    <string name="emailSendFail" />
+    <string name="tryAgain" />
+    <string name="loginError" />
+    <string name="emailHint">emailHint</string>
+    <string name="username">username</string>
+    <string name="passwordAgain">passwordAgain</string>
+    <string name="register">register</string>
+    <string name="usernameEmpty">usernameEmpty</string>
+    <string name="emailError">emailError</string>
+    <string name="passwordLength">8</string>
+    <string name="passwordEmpty">passwordEmpty</string>
+    <string name="passwordNotMatch">passwordNotMatch</string>
+    <string name="registerCompleteToast">registerCompleteToast</string>
+    <string name="registerProblem">registerProblem</string>
+    <string name="emailTaken">emailTaken</string>
+    <string name="usernameTaken">usernameTaken</string>
+    <string name="changePassword">changePassword</string>
+    <string name="reauthenticateToSeeInformation">reauthenticateToSeeInformation</string>
+    <string name="passwordUpdateSuccess">updateSuccess</string>
+    <string name="passwordUpdateFailed">passwordUpdateFailed</string>
+    <string name="cantFindUserInformation">cantFindUserInformation</string>
+    <string name="usernameNoSpaces">usernameNoSpaces</string>
 
 </resources>
