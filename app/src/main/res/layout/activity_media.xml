@@ -42,7 +42,7 @@
         <co.mobiwise.library.InteractivePlayerView
             android:layout_width="230dp"
             android:layout_height="210dp"
-            android:id="@+id/interactivePlayerView"
+            android:id="@+id/ipv"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             app:imageCover="@drawable/image"

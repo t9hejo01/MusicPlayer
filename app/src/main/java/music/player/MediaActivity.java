@@ -1,9 +1,5 @@
 package music.player;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GestureDetectorCompat;
-
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,12 +15,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
+
 import java.util.ArrayList;
 
 import co.mobiwise.library.InteractivePlayerView;
 import co.mobiwise.library.OnActionClickedListener;
 
-public class MediaActivity extends AppCompatActivity implements OnActionClickedListener, GestureDetector.OnGestureListener {
+
+
+public abstract class MediaActivity extends AppCompatActivity implements OnActionClickedListener, GestureDetector.OnGestureListener {
     public static final String Broadcast_PLAY_NEW_AUDIO = "testmusic";
     boolean serviceBound = false;
     ArrayList<Audio> audioList;
@@ -40,7 +41,7 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            LocalBinder binder = (LocalBinder) service;
+            MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
 
@@ -82,22 +83,23 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
         gestureDetectorCompat = new GestureDetectorCompat(this, this);
 
         Log.d("poo", "1");
-        final InteractivePlayerView mInteractivePlayerView = findViewById(R.id.interactivePlayerView);
+
+        final InteractivePlayerView ipv = (InteractivePlayerView) findViewById(R.id.ipv);
         long duration = audioList.get(songIdReceived).getDuration();
-        mInteractivePlayerView.setMax(250);
-        mInteractivePlayerView.setProgress(0);
-        mInteractivePlayerView.setOnActionClickedListener(this);
+        ipv.setMax(250);
+        ipv.setProgress(0);
+        ipv.setOnActionClickedListener(this);
 
         final ImageView imageView = findViewById(R.id.control);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mInteractivePlayerView.isPlaying()) {
+                if (!ipv.isPlaying()) {
                     playAudio(songIdReceived);
-                    mInteractivePlayerView.start();
+                    ipv.start();
                     imageView.setBackgroundResource(R.drawable.ic_action_pause);
                 } else {
-                    mInteractivePlayerView.stop();
+                    ipv.stop();
                     imageView.setBackgroundResource(R.drawable.ic_action_play);
                 }
             }
@@ -196,20 +198,6 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
         super.onResume();
         Log.d("poo", "5");
         shakeListener.resume();
-    }
-
-    @Override
-    public void onActionClicked(int id) {
-        switch (id) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                break;
-        }
     }
 
     private void playAudio(int audioIndex) {
