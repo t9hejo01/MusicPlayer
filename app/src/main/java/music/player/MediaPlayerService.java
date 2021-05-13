@@ -30,7 +30,7 @@ import androidx.core.app.NotificationCompat;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static androidx.media.app.NotificationCompat.*;
+
 
 
 public class MediaPlayerService extends Service implements MediaPlayer.OnCompletionListener,
