@@ -11,12 +11,12 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.ArrayList;
 
-public class mediaPlayerSwipe extends BaseSwipeAdapter {
+public class MediaPlayerSwipe extends BaseSwipeAdapter {
     Context context;
     ArrayList<Audio> audioList;
     OnItemClickListener onItemClickListener;
 
-    public mediaPlayerSwipe(Context context, ArrayList<Audio> audioList) {
+    public MediaPlayerSwipe(Context context, ArrayList<Audio> audioList) {
         this.context = context;
         this.audioList = audioList;
     }
