@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+;
+
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "offline";
 
@@ -22,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, OfflineActivity.class));
             }
         });
-
+    }
+        /*
         Button btnOnline = findViewById(R.id.btnOnline);
         btnOnline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,5 +33,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SearchOnlineActivity.class));
             }
         });
-    }
+         }
+        */
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/trackCardView"
+    android:layout_margin="5dp"
+    android:elevation="2dp"
+    app:cardCornerRadius="5dp">
+
+    <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mswipe">
+
+        <LinearLayout
+            android:layout_width="160dp"
+            android:layout_gravity="end"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="#66ddff00"
+            android:id="@+id/bottom_wrapper"
+            android:weightSum="3">
+
+            <ImageButton
+                android:id="@+id/fav"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_launcher"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/fbupload"
+                android:src="@drawable/ic_share_lime_300_24dp"
+                android:layout_weight="1" />
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/del"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_delete_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Layout1"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="2dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/tvTrackName"
+                android:text="surface view"
+                android:textStyle="bold|italic"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
+</androidx.cardview.widget.CardView>
