@@ -1,4 +1,4 @@
-package music.palyer;
+package music.player;
 
 import androidx.appcompat.app.AppCompatActivity;
 
