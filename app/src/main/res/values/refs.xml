@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="shuffle_selected">shuffle_selected</drawable>
+    <drawable name="like_selected">like_selected</drawable>
+    <drawable name="replay_selected">replay_selected</drawable>
+    <drawable name="like_unselected">like_unselected</drawable>
+    <drawable name="replay_unselected">replay_unselected</drawable>
+</resources>
