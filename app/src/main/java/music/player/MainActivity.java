@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, OfflineActivity.class));
             }
         });
-
+    }
+        /*
         Button btnOnline = findViewById(R.id.btnOnline);
         btnOnline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,5 +33,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SearchOnlineActivity.class));
             }
         });
-    }
+         }
+        */
 }
