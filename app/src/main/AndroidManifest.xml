@@ -17,10 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MediaActivity"></activity>
         <activity
-            android:name=".LoginFirebase"
-            android:label="@string/title_activity_login_firebase"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +27,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".GoogleUserUsername"></activity>
+        <activity android:name=".UserInformationActivity" />
+        <activity android:name=".UserProfile" />
+        <activity android:name=".Utilities" />
+        <activity android:name=".UserDatabase" />
+        <activity android:name=".UserRegisterActivity" />
+        <activity android:name=".UserLoginActivity" />
+
         <activity android:name=".MainActivity" />
 
         <service android:name=".MediaPlayerService" />
