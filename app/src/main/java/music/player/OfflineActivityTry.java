@@ -1,17 +1,5 @@
 package music.player;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -24,13 +12,25 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,7 +51,7 @@ public class OfflineActivityTry extends AppCompatActivity
 
     public static final String TAG = "offline";
     ConstraintLayout constraintLayout;
-    mediaAdapterSwipe adapterSwipe;
+    MediaPlayerSwipe adapterSwipe;
     ListView listView;
     RecyclerView rvTrackList;
     MediaAdapter mediaAdapter;
@@ -111,7 +111,7 @@ public class OfflineActivityTry extends AppCompatActivity
         }
 
         if (audioList != null) {
-            adapterSwipe = new mediaAdapterSwipe(OfflineActivityTry.this, audioList);
+            adapterSwipe = new MediaPlayerSwipe(OfflineActivityTry.this, audioList);
             Log.d(TAG, "onCreate: after loadAudio");
             Collections.sort(audioList, new Comparator<Audio>() {
                 @Override
@@ -152,8 +152,7 @@ public class OfflineActivityTry extends AppCompatActivity
             public void itemClick(int itemId, View view) {
                 adapterSwipe.closeAllItems();
                 switch (view.getId()) {
-                    case R.id
-                        .1 Layout:
+                    case R.id.1 Layout:
                     Log.d(TAG, "onCreate: inside onClick");
                         Intent i = new Intent(OfflineActivityTry.this, MediaActivity.class);
                         i.putExtra("songId", itemId);
@@ -255,7 +254,7 @@ public class OfflineActivityTry extends AppCompatActivity
         // so long as you specify a parent activity in AndroidManifest - file.
         int id = item.getItemId();
 
-        if (id == R.id.sortBy) {
+        if (id == R.id.sortByName) {
             Collections.sort(audioList, new Comparator<Audio>() {
                 @Override
                 public int compare(Audio audio, Audio t1) {

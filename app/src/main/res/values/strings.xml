@@ -7,8 +7,7 @@
     <string name="loading">loading</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_play_lists">PlayLists</string>
-    <string name="title_activity_login_firebase">LoginFirebase</string>
-    <string name="default_web_client_id" />
+    <string name="default_web_client_id">default_web_client_id</string>
     <string name="email">email</string>
     <string name="password">password</string>
     <string name="loginButton">"loginButton "</string>
