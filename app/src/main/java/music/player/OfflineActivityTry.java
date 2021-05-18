@@ -152,7 +152,7 @@ public class OfflineActivityTry extends AppCompatActivity
             public void itemClick(int itemId, View view) {
                 adapterSwipe.closeAllItems();
                 switch (view.getId()) {
-                    case R.id.1 Layout:
+                    case R.id.Layout:
                     Log.d(TAG, "onCreate: inside onClick");
                         Intent i = new Intent(OfflineActivityTry.this, MediaActivity.class);
                         i.putExtra("songId", itemId);
