@@ -30,7 +30,7 @@ android {
 }
 repositories {
     maven {
-        url "https://jitpack.io"
+        url "https://www.jitpack.io"
     }
     google()
 }
@@ -41,28 +41,23 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
-    implementation 'com.google.firebase:firebase-storage:19.2.2'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
-
-    implementation platform('com.google.firebase:firebase-bom:27.1.0')
-
     implementation 'com.google.android.material:material:1.3.0'
-
-    implementation 'com.google.firebase:firebase-auth:10.0.1'
-    implementation 'com.google.android.gms:play-services:8.3.0'
-    implementation 'com.google.android.gms.play-services-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-auth:21.0.0'
     implementation 'com.google.firebase:firebase-analytics'
-
     implementation 'com.github.iammert:InteractivePlayerView:f4f6490290'
     implementation 'com.google.firebase:firebase-core:9.4.0'
-
     implementation 'com.google.android.gms:play-services:12.0.1'
-
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'com.google.gms:google-services:4.3.7'
+    implementation 'com.google.gms:google-services:4.3.7'
+    implementation 'com.google.firebase:firebase-firestore:23.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
 }
-
 
 apply plugin: 'com.google.gms.google-services'
 
