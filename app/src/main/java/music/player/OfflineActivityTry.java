@@ -306,7 +306,7 @@ public class OfflineActivityTry extends AppCompatActivity
             Intent playlist = new Intent(getApplicationContext(), PlayLists.class);
             startActivity(playlist);
         } else if (id == R.id.Settings) {
-            Intent i = new Intent(getApplicationContext().SetSilentPhone.class);
+            Intent i = new Intent(getApplicationContext(), SetSilentPhone.class);
             startActivity(i);
         } else if (id == R.id.Youtube) {
 

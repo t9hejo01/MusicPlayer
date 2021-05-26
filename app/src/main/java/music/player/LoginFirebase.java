@@ -18,7 +18,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -27,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginFirebase extends AppCompatActivity implements View.OnClickListener, OnConnectionFailedListener {
+public class LoginFirebase extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private final int GOOGLE_SIGN_IN_CODE = 0123;
     EditText etEmail;
     EditText etPassword;
@@ -57,6 +59,7 @@ public class LoginFirebase extends AppCompatActivity implements View.OnClickList
                 .build();
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, (GoogleApiClient.OnConnectionFailedListener) this)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
