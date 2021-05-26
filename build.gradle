@@ -7,8 +7,6 @@ buildscript {
             url "https://jitpack.io"
         }
 
-
-
     }
     
     dependencies {

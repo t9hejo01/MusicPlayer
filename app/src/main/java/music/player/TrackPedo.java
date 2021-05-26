@@ -9,12 +9,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +29,7 @@ public class TrackPedo extends AppCompatActivity {
     RecyclerView rvPedo;
     TrackPedoAdapter adapter;
     DatabaseReference users;
-    String token;
+    Task<String> token;
     String mid;
     FirebaseDatabase db;
     ArrayList<PedoUser> pedoUsers;
@@ -42,13 +44,13 @@ public class TrackPedo extends AppCompatActivity {
         mid = getIntent().getStringExtra("uid");
         Toast.makeText(this, "in track pedo mid" + mid, Toast.LENGTH_SHORT).show();
         pedoUsers = new ArrayList<>();
-        pedoUsers.add(new PedoUser("100", "111", "19/05/21"));
+        pedoUsers.add(new PedoUser("0", "00", "DD/MM/YYYY"));
         rvPedo = findViewById(R.id.rvPedo);
         rvPedo.setLayoutManager(new LinearLayoutManager(TrackPedo.this));
 
         adapter = new TrackPedoAdapter(getApplicationContext(), pedoUsers);
 
-        token = FirebaseInstanceId.getInstance().getToken();
+        token = FirebaseMessaging.getInstance().getToken();
         db = FirebaseDatabase.getInstance();
         users = db.getReference();
         ChildEventListener cel = new ChildEventListener() {
