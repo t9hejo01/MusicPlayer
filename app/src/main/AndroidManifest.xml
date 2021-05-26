@@ -43,12 +43,6 @@
 
         <activity android:name=".MediaActivity" />
         <activity android:name=".OfflineActivity" />
-        <activity android:name=".GoogleUserUsername" />
-        <activity android:name=".UserDatabase" />
-        <activity android:name=".UserInformationActivity" />
-        <activity android:name=".UserProfile" />
-        <activity android:name=".Utilities" />
-        <activity android:name=".UserRegisterActivity" />
         <activity
             android:name=".OfflineActivityTry"
             android:label="@string/title_activity_offline_try"
