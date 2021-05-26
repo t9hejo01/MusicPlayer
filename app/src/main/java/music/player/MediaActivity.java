@@ -25,7 +25,7 @@ import co.mobiwise.library.OnActionClickedListener;
 
 
 
-public abstract class MediaActivity extends AppCompatActivity implements OnActionClickedListener, GestureDetector.OnGestureListener {
+public class MediaActivity extends AppCompatActivity implements OnActionClickedListener, GestureDetector.OnGestureListener {
     public static final String Broadcast_PLAY_NEW_AUDIO = "testmusic";
     boolean serviceBound = false;
     ArrayList<Audio> audioList;
@@ -198,6 +198,20 @@ public abstract class MediaActivity extends AppCompatActivity implements OnActio
         super.onResume();
         Log.d("poo", "5");
         shakeListener.resume();
+    }
+
+    @Override
+    public void onActionClicked(int id) {
+        switch (id) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
     }
 
     private void playAudio(int audioIndex) {

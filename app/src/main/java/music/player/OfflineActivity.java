@@ -1,9 +1,5 @@
 package music.player;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,10 +8,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +23,12 @@ import java.util.Comparator;
 public class OfflineActivity extends AppCompatActivity {
     public static final String TAG = "offline";
     ConstraintLayout constraintLayout;
-    mediaAdapterSwipe adapter;
+    MediaPlayerSwipe adapter;
     ListView listView;
     RecyclerView rvTrackList;
-    MediaAdapter tvTotalSongs;
-    ArrayList<Audio> audioList;
     TextView tvTotalSongs;
+    ArrayList<Audio> audioList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +39,10 @@ public class OfflineActivity extends AppCompatActivity {
         constraintLayout = findViewById(R.id.cLayout1);
         Log.d(TAG, "onCreate: Before loadaudio");
         loadAudio();
-        adapter = new mediaAdapterSwipe(OfflineActivity.this, audioList);
+        adapter = new MediaPlayerSwipe(OfflineActivity.this, audioList);
 
         Log.d(TAG, "onCreate: after loadaudio");
-        Collections.sort(audioList, new Comparator<MediaStore.Audio>() {
+        Collections.sort(audioList, new Comparator<Audio>() {
             @Override
             public int compare(Audio audio1, Audio audio2) {
                 return audio1.getTitle().compareToIgnoreCase(audio2.getTitle());
@@ -54,7 +53,7 @@ public class OfflineActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void itemClick(View view, int itemId) {
+            public void itemClick(int itemId, View view) {
                 adapter.closeItem(itemId);
                 switch (view.getId()) {
                     case R.id.cLayout1:
@@ -75,9 +74,12 @@ public class OfflineActivity extends AppCompatActivity {
             }
         });
 
-        tvTotalSongs = (TextView) findViewById(R.id.tvTotalSongs1);
-        ((TextView) tvTotalSongs).setText("Total Songs : " + audioList.size());
+        tvTotalSongs = (TextView) findViewById(R.id.tvTotalSongs);
+        tvTotalSongs.setText("Total Songs: " + audioList.size());
+
     }
+
+
 
         private void loadAudio() {
             Log.d(TAG, "onCreate: inside loadaudio");
