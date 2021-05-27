@@ -5,7 +5,7 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/sortByYou"
+                    android:id="@+id/sortByDuration"
                     app:showAsAction="never"
                     android:title="Duration" />
                 <item

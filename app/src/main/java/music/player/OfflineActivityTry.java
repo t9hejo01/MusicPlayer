@@ -254,13 +254,23 @@ public class OfflineActivityTry extends AppCompatActivity
         // so long as you specify a parent activity in AndroidManifest - file.
         int id = item.getItemId();
 
-        if (id == R.id.sortByName) {
+        if (id == R.id.sortByDuration) {
             Collections.sort(audioList, new Comparator<Audio>() {
                 @Override
                 public int compare(Audio audio, Audio t1) {
                     Long a1 = audio.getDuration();
                     Long a2 = t1.getDuration();
                     return a1.compareTo(a2);
+                }
+            });
+            item.setChecked(true);
+            adapterSwipe.updateMedia(audioList);
+            return true;
+        } else if (id == R.id.sortByName) {
+            Collections.sort(audioList, new Comparator<Audio>() {
+                @Override
+                public int compare(Audio audio1, Audio audio2) {
+                    return audio1.getTitle().compareToIgnoreCase(audio2.getTitle());
                 }
             });
             item.setChecked(true);
