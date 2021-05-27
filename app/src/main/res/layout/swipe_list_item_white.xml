@@ -30,7 +30,7 @@
                 android:src="@mipmap/ic_launcher" />
             <ImageButton
                 android:layout_width="0dp"
-                android:id="@+id/fbupload"
+                android:id="@+id/fbUpload"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/ic_share_lime_300_24dp" />
