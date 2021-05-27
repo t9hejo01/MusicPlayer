@@ -10,8 +10,8 @@
 
     <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        android:id="@+id/mswipe"
+        android:layout_height="match_parent"
+        android:id="@+id/mswipe">
 
         <LinearLayout
             android:layout_width="160dp"
@@ -30,7 +30,7 @@
                 android:src="@mipmap/ic_launcher" />
             <ImageButton
                 android:layout_width="0dp"
-                android:id="@+id/fbUpload"
+                android:id="@+id/fbupload"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:src="@drawable/ic_share_lime_300_24dp" />

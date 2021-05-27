@@ -91,7 +91,7 @@ public class MediaPlayerSwipe extends BaseSwipeAdapter {
             }
         });
 
-        convertView.findViewById(R.id.fbUpload).setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.fbupload).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClickListener.itemClick(p, v);

@@ -181,7 +181,7 @@ public class OfflineActivityTry extends AppCompatActivity
                                 audioList.get(itemId).getId(),
                                 PlayListHelper.getPlaylist(getApplicationContext().getContentResolver(), "Favourites"));
                         break;
-                    case R.id.fbUpload:
+                    case R.id.fbupload:
                         dialog.setMessage("Uploading to firebase");
                         dialog.show();
                         Toast.makeText(getApplicationContext(), "Share", Toast.LENGTH_SHORT).show();
