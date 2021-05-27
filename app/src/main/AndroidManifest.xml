@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <permission android:name="android.permission.Media_CONTENT_CONTROL" />
+    <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -24,7 +24,8 @@
         <activity android:name=".MediaActivity" />
         <activity android:name=".OfflineActivity" />
 
-        <activity android:name=".OfflineActivityTry"
+        <activity
+            android:name=".OfflineActivityTry"
             android:label="@string/title_activity_offline_try"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
