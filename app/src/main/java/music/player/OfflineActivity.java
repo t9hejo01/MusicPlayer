@@ -23,7 +23,7 @@ import java.util.Comparator;
 public class OfflineActivity extends AppCompatActivity {
     public static final String TAG = "offline";
     ConstraintLayout constraintLayout;
-    MediaPlayerSwipe adapter;
+    MediaAdapterSwipe adapter;
     ListView listView;
     RecyclerView rvTrackList;
     TextView tvTotalSongs;
@@ -39,7 +39,7 @@ public class OfflineActivity extends AppCompatActivity {
         constraintLayout = findViewById(R.id.cLayout1);
         Log.d(TAG, "onCreate: Before loadaudio");
         loadAudio();
-        adapter = new MediaPlayerSwipe(OfflineActivity.this, audioList);
+        adapter = new MediaAdapterSwipe(OfflineActivity.this, audioList);
 
         Log.d(TAG, "onCreate: after loadaudio");
         Collections.sort(audioList, new Comparator<Audio>() {
