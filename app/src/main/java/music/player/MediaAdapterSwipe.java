@@ -1,6 +1,7 @@
 package music.player;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,12 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.ArrayList;
 
-public class MediaPlayerSwipe extends BaseSwipeAdapter {
+public class MediaAdapterSwipe extends BaseSwipeAdapter {
     Context context;
     ArrayList<Audio> audioList;
     OnItemClickListener onItemClickListener;
 
-    public MediaPlayerSwipe(Context context, ArrayList<Audio> audioList) {
+    public MediaAdapterSwipe(Context context, ArrayList<Audio> audioList) {
         this.context = context;
         this.audioList = audioList;
     }
@@ -44,6 +45,7 @@ public class MediaPlayerSwipe extends BaseSwipeAdapter {
         return R.id.mswipe;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View generateView(int position, ViewGroup parent) {
         if (getItemViewType(position) == 0) {

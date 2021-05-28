@@ -51,7 +51,7 @@ public class OfflineActivityTry extends AppCompatActivity
 
     public static final String TAG = "offline";
     ConstraintLayout constraintLayout;
-    MediaPlayerSwipe adapterSwipe;
+    MediaAdapterSwipe adapterSwipe;
     ListView listView;
     RecyclerView rvTrackList;
     MediaAdapter mediaAdapter;
@@ -111,7 +111,7 @@ public class OfflineActivityTry extends AppCompatActivity
         }
 
         if (audioList != null) {
-            adapterSwipe = new MediaPlayerSwipe(OfflineActivityTry.this, audioList);
+            adapterSwipe = new MediaAdapterSwipe(OfflineActivityTry.this, audioList);
             Log.d(TAG, "onCreate: after loadAudio");
             Collections.sort(audioList, new Comparator<Audio>() {
                 @Override
