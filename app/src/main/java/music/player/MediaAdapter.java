@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -42,12 +41,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     public void onBindViewHolder(MediaViewHolder holder, int position) {
         Audio audio = audioList.get(position);
         holder.tvTitle.setText(audio.getTitle());
-        holder.thisView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.itemClick(position, v);
-            }
-        });
+        holder.thisView.setOnClickListener(v -> onItemClickListener.itemClick(position, v));
     }
 
     @Override
@@ -55,7 +49,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         return audioList.size();
     }
 
-    class MediaViewHolder extends RecyclerView.ViewHolder {
+    static class MediaViewHolder extends RecyclerView.ViewHolder {
         View thisView;
         TextView tvTitle;
 

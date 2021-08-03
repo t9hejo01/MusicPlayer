@@ -1,7 +1,6 @@
 package music.player;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +11,16 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.ArrayList;
 
-public class MediaAdapterSwipe extends BaseSwipeAdapter {
+public class mediaAdapterSwipe extends BaseSwipeAdapter {
     Context context;
     ArrayList<Audio> audioList;
     OnItemClickListener onItemClickListener;
 
-    public MediaAdapterSwipe(Context context, ArrayList<Audio> audioList) {
+    public mediaAdapterSwipe(Context context, ArrayList<Audio> audioList) {
         this.context = context;
         this.audioList = audioList;
     }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -45,13 +45,13 @@ public class MediaAdapterSwipe extends BaseSwipeAdapter {
         return R.id.mswipe;
     }
 
-    @SuppressLint("InflateParams")
+
     @Override
     public View generateView(int position, ViewGroup parent) {
         if (getItemViewType(position) == 0) {
-            return LayoutInflater.from(context).inflate(R.layout.swipe_list_item_track, null);
+            return LayoutInflater.from(context).inflate(R.layout.swipe_list_item_track, parent, false);
         } else {
-            return LayoutInflater.from(context).inflate(R.layout.swipe_list_item_white, null);
+            return LayoutInflater.from(context).inflate(R.layout.swipe_list_item_white, parent, false);
         }
     }
 
@@ -72,33 +72,10 @@ public class MediaAdapterSwipe extends BaseSwipeAdapter {
     public void fillValues(final int p, View convertView) {
         TextView tv = convertView.findViewById(R.id.tvTrackName);
         tv.setText(getItem(p).getTitle());
-        convertView.findViewById(R.id.fav).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.itemClick(p, v);
-            }
-        });
-
-        convertView.findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.itemClick(p, v);
-            }
-        });
-
-        convertView.findViewById(R.id.Layout1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.itemClick(p, v);
-            }
-        });
-
-        convertView.findViewById(R.id.fbupload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.itemClick(p, v);
-            }
-        });
+        convertView.findViewById(R.id.fav).setOnClickListener(v -> onItemClickListener.itemClick(p, v));
+        convertView.findViewById(R.id.del).setOnClickListener(v -> onItemClickListener.itemClick(p, v));
+        convertView.findViewById(R.id.Layout1).setOnClickListener(v -> onItemClickListener.itemClick(p, v));
+        convertView.findViewById(R.id.fbupload).setOnClickListener(v -> onItemClickListener.itemClick(p, v));
     }
 
     @Override

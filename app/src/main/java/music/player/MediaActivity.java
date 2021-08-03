@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,16 +30,20 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
     ArrayList<Audio> audioList;
     private MediaPlayerService player;
 
+    // Swipe
     RelativeLayout swipeRLayout;
     ImageView swipeImageView;
     GestureDetectorCompat gestureDetectorCompat;
-
+    /////////////
+    /////////////////////////////////////////////
     private ShakeListener shakeListener;
-
+    ///////////////////////////////////////////////////
     int songIdReceived;
+    //Binding the client to the AudioPlayer service
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
             MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
@@ -69,51 +72,40 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
         ((TextView) findViewById(R.id.tvNextSong3Title)).setText(audioList.get((songIdReceived + 3) % audioList.size()).getTitle());
         ((TextView) findViewById(R.id.tvNextSong1Artist)).setText(audioList.get((songIdReceived + 1) % audioList.size()).getTitle());
         ((TextView) findViewById(R.id.tvNextSong2Artist)).setText(audioList.get((songIdReceived + 2) % audioList.size()).getTitle());
-        ((TextView) findViewById(R.id.tvNextSong1Artist)).setText(audioList.get((songIdReceived + 3) % audioList.size()).getTitle());
+        ((TextView) findViewById(R.id.tvNextSong3Artist)).setText(audioList.get((songIdReceived + 3) % audioList.size()).getTitle());
 
+        // Swipe
         swipeRLayout = findViewById(R.id.songPlayerTopLayout);
         swipeImageView = findViewById(R.id.imageView);
-        swipeImageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gestureDetectorCompat.onTouchEvent(event);
-            }
-        });
+        swipeImageView.setOnTouchListener((v, event) -> gestureDetectorCompat.onTouchEvent(event));
 
         gestureDetectorCompat = new GestureDetectorCompat(this, this);
 
         Log.d("poo", "1");
 
-        final InteractivePlayerView ipv = (InteractivePlayerView) findViewById(R.id.ipv);
-        long duration = audioList.get(songIdReceived).getDuration();
+        final InteractivePlayerView ipv = findViewById(R.id.ipv);
         ipv.setMax(250);
         ipv.setProgress(0);
         ipv.setOnActionClickedListener(this);
 
         final ImageView imageView = findViewById(R.id.control);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ipv.isPlaying()) {
-                    playAudio(songIdReceived);
-                    ipv.start();
-                    imageView.setBackgroundResource(R.drawable.ic_action_pause);
-                } else {
-                    ipv.stop();
-                    imageView.setBackgroundResource(R.drawable.ic_action_play);
-                }
+        imageView.setOnClickListener(v -> {
+            if (!ipv.isPlaying()) {
+                playAudio(songIdReceived);
+                ipv.start();
+                imageView.setBackgroundResource(R.drawable.ic_action_pause);
+            } else {
+                ipv.stop();
+                imageView.setBackgroundResource(R.drawable.ic_action_play);
             }
         });
 
         shakeListener = new ShakeListener(MediaActivity.this);
-        shakeListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
-            @Override
-            public void onShake() {
-                Log.d("poo", "onShake");
-                stopServiceIfBound();
-                playSong(songIdReceived + 1);
-                finish();
-            }
+        shakeListener.setOnShakeListener(() -> {
+            Log.d("poo", "onShake");
+            stopServiceIfBound();
+            playSong(songIdReceived + 1);
+            finish();
         });
     }
 
@@ -126,8 +118,8 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
 
     private void stopServiceIfBound() {
         if (serviceBound) {
-            Intent stopservice = new Intent(MediaActivity.this, MediaPlayerService.class);
-            stopService(stopservice);
+            Intent stopService = new Intent(MediaActivity.this, MediaPlayerService.class);
+            stopService(stopService);
         }
     }
 
@@ -164,15 +156,12 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
             if (Math.abs(diffX) > 100 && Math.abs(velocityX) > 100) {
                 if (diffX > 0) {
                     Toast.makeText(this,"right", Toast.LENGTH_SHORT).show();
-                    stopServiceIfBound();
-                    playSong(songIdReceived - 1);
-                    finish();
                 } else {
                     Toast.makeText(this,"left", Toast.LENGTH_SHORT).show();
-                    stopServiceIfBound();
-                    playSong(songIdReceived - 1);
-                    finish();
                 }
+                stopServiceIfBound();
+                playSong(songIdReceived - 1);
+                finish();
             }
         } else {
             if (Math.abs(diffY) > 100 && Math.abs(velocityY) > 100) {
@@ -209,34 +198,31 @@ public class MediaActivity extends AppCompatActivity implements OnActionClickedL
                 break;
             case 3:
                 break;
-            default:
-                break;
         }
     }
 
     private void playAudio(int audioIndex) {
         // Check if service is active
         if (!serviceBound) {
-            // Store Serializable audioList to SharedPreferences
+            // Store new audioIndex to SharedPreferences
             StorageUtil storageUtil = new StorageUtil(getApplicationContext());
             storageUtil.storeAudio(audioList);
             storageUtil.storeAudioIndex(audioIndex);
 
             Intent playerIntent = new Intent(this, MediaPlayerService.class);
-            startActivity(playerIntent);
+            startService(playerIntent);
             bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         } else {
-            // Store new audioIndex to SharedPreferences
+            //Store the new audioIndex to SharedPreferences
             StorageUtil storageUtil = new StorageUtil(getApplicationContext());
             storageUtil.storeAudioIndex(audioIndex);
 
-            // Service is active
-            // Send broadcast to te service -> Play new audio
+            //Service is active
+            //Send a broadcast to the service -> PLAY_NEW_AUDIO
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
             sendBroadcast(broadcastIntent);
         }
     }
-
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
