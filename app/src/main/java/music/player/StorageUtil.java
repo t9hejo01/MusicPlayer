@@ -13,7 +13,7 @@ public class StorageUtil {
 
     private static final String STORAGE = "MusicPlayer.STORAGE";
     private SharedPreferences preferences;
-    private Context context;
+    private final Context context;
 
     public StorageUtil(Context context) {
         this.context = context;
@@ -44,7 +44,7 @@ public class StorageUtil {
     }
 
     public void storeAudioIndex(int index) {
-        preferences = context.getSharedPreferences(STORAGE, context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences(STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("audioIndex", index);
         editor.apply();
@@ -59,6 +59,6 @@ public class StorageUtil {
         preferences = context.getSharedPreferences(STORAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 }

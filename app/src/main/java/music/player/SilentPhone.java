@@ -1,7 +1,6 @@
 package music.player;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -33,7 +32,6 @@ public class SilentPhone extends Service implements SensorEventListener {
     long snoozeDuration;
 
     public static final String TAG = "TAG";
-    BroadcastReceiver broadcastReceiver;
     SensorManager sensorManager;
 
     long currentTime;
@@ -96,7 +94,7 @@ public class SilentPhone extends Service implements SensorEventListener {
 
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         if ((event.values[2] < -9) && flag && (event.values[1] > -3) && (event.values[1] < 3)) {
-            if (music == true && musicFlipActive == false) {
+            if (music && !musicFlipActive) {
                 if (DEBUG) Log.d("MUSIC", "Music in sensor off");
                 if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) > 0) {
                     musicVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -105,7 +103,7 @@ public class SilentPhone extends Service implements SensorEventListener {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
             }
 
-            if (ringtone == true && ringFlipActive == false) {
+            if (ringtone && !ringFlipActive) {
                 if (DEBUG) Log.d("RINGTONE", "Ringtone");
                 if (audioManager.getStreamVolume(AudioManager.STREAM_RING) > 0) {
                     ringVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
@@ -115,7 +113,7 @@ public class SilentPhone extends Service implements SensorEventListener {
                 }
             }
 
-            if (alarm == true && alarmFlipActive == false) {
+            if (alarm && !alarmFlipActive) {
                 if (DEBUG) Log.d("ALARM", "ALARM");
                 if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) > 0) {
                     alarmVolume = audioManager.getStreamVolume(AudioManager.STREAM_ALARM);
@@ -142,7 +140,7 @@ public class SilentPhone extends Service implements SensorEventListener {
             ringFlipActive = false;
         }
 
-        if (event.values[2] < -9 && alarm == true && flag && ((SystemClock.uptimeMillis() - alarmCurrent) > snoozeDuration) && alarmFlipActive == true && alarm_recovery) {
+        if (event.values[2] < -9 && alarm && flag && ((SystemClock.uptimeMillis() - alarmCurrent) > snoozeDuration) && alarmFlipActive && alarm_recovery) {
             audioManager.setStreamVolume(AudioManager.STREAM_ALARM, alarmVolume, 0);
         }
     }

@@ -50,23 +50,13 @@ public class PlaylistAdapter extends BaseSwipeAdapter {
 
     @Override
     public View generateView(int position, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.play_list_item, null);
+        return LayoutInflater.from(context).inflate(R.layout.play_list_item, parent, false);
     }
 
     @Override
     public void fillValues(final int position, final View convertView) {
         ((TextView) convertView.findViewById(R.id.tvPlaylistName)).setText(getItem(position).getName());
-        convertView.findViewById(R.id.LayoutPlaylist).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPlaylistClickedListener.onPlaylistClicked(-1, context, playlistArrayList.get(position).getId());
-            }
-        });
-        convertView.findViewById(R.id.delPlaylist).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPlaylistClickedListener.onPlaylistClicked(position, context, playlistArrayList.get(position).getId());
-            }
-        });
+        convertView.findViewById(R.id.LayoutPlaylist).setOnClickListener(v -> onPlaylistClickedListener.onPlaylistClicked(-1, context, playlistArrayList.get(position).getId()));
+        convertView.findViewById(R.id.delPlaylist).setOnClickListener(v -> onPlaylistClickedListener.onPlaylistClicked(position, context, playlistArrayList.get(position).getId()));
     }
 }

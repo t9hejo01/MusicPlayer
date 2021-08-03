@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+
 public class PlayListHelper {
+
     public static Cursor queryPlaylists(ContentResolver resolver) {
         Uri media = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
         String[] projection = {MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME};
@@ -34,15 +36,17 @@ public class PlayListHelper {
 
     public static ArrayList<Audio> getAllSongsOfPlaylist(Context context, Long pid) {
         ArrayList<Audio> audioArrayList = new ArrayList<>();
-        final String[] PROJECTION = new String[]{
-                MediaStore.Audio.Playlists.Members.AUDIO_ID,
-                MediaStore.Audio.Playlists.Members.DATA,
-                MediaStore.Audio.Playlists.Members.TITLE,
-                MediaStore.Audio.Playlists.Members.ALBUM,
-                MediaStore.Audio.Playlists.Members.ARTIST,
-                MediaStore.Audio.Playlists.Members.DURATION,
-                MediaStore.Audio.Playlists.Members.PLAY_ORDER,
-        };
+        String[] PROJECTION = new String[0];
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            PROJECTION = new String[]{
+                    MediaStore.Audio.Playlists.Members.ALBUM,
+                    MediaStore.Audio.Playlists.Members.ARTIST,
+                    MediaStore.Audio.Playlists.Members.AUDIO_ID,
+                    MediaStore.Audio.Playlists.Members.DURATION,
+                    MediaStore.Audio.Playlists.Members.PLAY_ORDER,
+                    MediaStore.Audio.Playlists.Members.TITLE
+            };
+        }
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", pid);
         try {
             ContentResolver resolver = context.getContentResolver();
@@ -52,16 +56,30 @@ public class PlayListHelper {
                     Long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.AUDIO_ID));
                     String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.DATA));
                     String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.TITLE));
-                    String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.ALBUM));
-                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.ARTIST));
-                    Long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.DURATION));
+                    String album = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.ALBUM));
+                    }
+
+                    String artist = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.ARTIST));
+                    }
+
+                    long duration = 0;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.DURATION));
+                    }
+
+                    Toast.makeText(context, title, Toast.LENGTH_SHORT).show();
+                    audioArrayList.add(new Audio(id, data, title, album, artist, duration));
                 }
             } else {
                 Toast.makeText(context, "null", Toast.LENGTH_SHORT).show();
             }
             cursor.close();
         } catch (Exception e) {
-            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
         }
 
         Toast.makeText(context, audioArrayList.size() + "", Toast.LENGTH_SHORT).show();
@@ -89,6 +107,7 @@ public class PlayListHelper {
         long id = getPlaylist(resolver, name);
 
         if (id == -1) {
+            // Create a new playlist
             ContentValues values = new ContentValues(1);
             values.put(MediaStore.Audio.Playlists.NAME, name);
             Uri uri = resolver.insert(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values);
@@ -105,14 +124,17 @@ public class PlayListHelper {
                 "count(*)"
         };
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", YOUR_PLAYLIST_ID);
-        Cursor cur = resolver.query(uri, cols, null, null,null);
-        cur.moveToFirst();
-        final int base = cur.getInt(0);
-        cur.close();
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
-        values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
-        resolver.insert(uri, values);
+        final int base;
+        try (Cursor cur = resolver.query(uri, cols, null, null, null)) {
+            cur.moveToFirst();
+            base = cur.getInt(0);
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
+            values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
+            resolver.insert(uri, values);
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void removeFromPlaylist(ContentResolver resolver, int audioId, Long YOUR_PLAYLIST_ID) {
@@ -123,7 +145,6 @@ public class PlayListHelper {
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", YOUR_PLAYLIST_ID);
         Cursor cur = resolver.query(uri, cols, null, null, null);
         cur.moveToFirst();
-        final int base = cur.getInt(0);
         cur.close();
         ContentValues values = new ContentValues();
 

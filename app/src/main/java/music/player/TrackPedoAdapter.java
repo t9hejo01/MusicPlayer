@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ public class TrackPedoAdapter extends RecyclerView.Adapter<TrackPedoAdapter.User
         this.pedoUsers = pedoUsers;
 
     }
-
     public void updateArrayList(ArrayList<PedoUser> arrayList) {
         this.pedoUsers = arrayList;
         notifyDataSetChanged();
@@ -31,8 +29,7 @@ public class TrackPedoAdapter extends RecyclerView.Adapter<TrackPedoAdapter.User
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.list_item_fbpedo, parent, false);
-        UserViewHolder uvh = new UserViewHolder(view);
-        return uvh;
+        return new UserViewHolder(view);
     }
 
     @Override
@@ -55,9 +52,9 @@ public class TrackPedoAdapter extends RecyclerView.Adapter<TrackPedoAdapter.User
 
         public UserViewHolder(View itemView) {
             super(itemView);
-            this.distance = itemView.findViewById(R.id.distance);
-            this.steps = itemView.findViewById(R.id.steps);
-            this.date = itemView.findViewById(R.id.date);
+            this.distance = itemView.findViewById(R.id.fbDistance);
+            this.steps = itemView.findViewById(R.id.fbSteps);
+            this.date = itemView.findViewById(R.id.fbDate);
         }
     }
 }

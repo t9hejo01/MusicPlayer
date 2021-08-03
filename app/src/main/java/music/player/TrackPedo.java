@@ -14,14 +14,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 
 public class TrackPedo extends AppCompatActivity {
     RecyclerView rvPedo;
@@ -47,11 +49,13 @@ public class TrackPedo extends AppCompatActivity {
         rvPedo.setLayoutManager(new LinearLayoutManager(TrackPedo.this));
 
         adapter = new TrackPedoAdapter(getApplicationContext(), pedoUsers);
+        rvPedo.setAdapter(adapter);
 
-        token = String.valueOf(FirebaseMessaging.getInstance().getToken());
+        token = FirebaseInstanceId.getInstance().getToken();
         db = FirebaseDatabase.getInstance();
         users = db.getReference();
         ChildEventListener cel = new ChildEventListener() {
+
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
                 String p = snapshot.getValue(String.class);
@@ -72,7 +76,8 @@ public class TrackPedo extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+            public void onChildChanged(DataSnapshot snapshot,
+                                       String previousChildName) {
                 Log.d("tag", "onChildChanged");
             }
 
@@ -92,13 +97,13 @@ public class TrackPedo extends AppCompatActivity {
             }
         };
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
         String date = simpleDateFormat.format(calendar.getTime());
 
         JSONObject object = new JSONObject();
         try {
-            object.put("distance", "100km");
-            object.put("steps", "100");
+            object.put("distance", "0");
+            object.put("steps", "0");
             object.put("date", date);
         } catch (JSONException e) {
             e.printStackTrace();

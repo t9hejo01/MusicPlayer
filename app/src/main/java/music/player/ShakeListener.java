@@ -10,16 +10,13 @@ import android.util.Log;
 public class ShakeListener implements SensorEventListener {
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
     private static final int SHAKE_STOP_TIME_MS = 500;
-    private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
 
     private long mShakeTimestamp;
-    private SensorManager mSensorMgr;
+    private final SensorManager mSensorMgr;
     private OnShakeListener mShakeListener;
-    private Context mContext;
-    private int mShakeCount = 0;
 
     public interface OnShakeListener {
-        public void onShake();
+        void onShake();
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -45,12 +42,8 @@ public class ShakeListener implements SensorEventListener {
                 Log.d("poo", "2");
 
                 // Reset shake count after 3 seconds of no shakes
-                if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
-                    mShakeCount = 0;
-                }
 
                 mShakeTimestamp = now;
-                mShakeCount++;
 
                 mShakeListener.onShake();
             }
@@ -64,8 +57,7 @@ public class ShakeListener implements SensorEventListener {
 
     public ShakeListener(Context context) {
         Log.d("poo", "6");
-        mContext = context;
-        mSensorMgr = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        mSensorMgr = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         resume();
     }
 

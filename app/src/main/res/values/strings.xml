@@ -39,5 +39,6 @@
     <string name="title_activity_track_pedo">title_activity_track_pedo</string>
     <string name="title_activity_pedometer">title_activity_pedometer</string>
     <string name="title_activity_login_firebase">title_activity_login_firebase</string>
+    <string name="msg_token">msg_token</string>
 
 </resources>

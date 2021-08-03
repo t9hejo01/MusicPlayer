@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,33 +27,26 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+
+import static music.player.PlayListHelper.addToPlaylist;
 
 public class OfflineActivityTry extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "offline";
     ConstraintLayout constraintLayout;
-    MediaAdapterSwipe adapterSwipe;
+    mediaAdapterSwipe adapterSwipe;
     ListView listView;
-    RecyclerView rvTrackList;
-    MediaAdapter mediaAdapter;
     ArrayList<Audio> audioList;
     TextView tvTotalSongs;
     StorageReference storageReference;
@@ -79,13 +71,8 @@ public class OfflineActivityTry extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -102,8 +89,8 @@ public class OfflineActivityTry extends AppCompatActivity
         listView = findViewById(R.id.lvTrackList);
         constraintLayout = findViewById(R.id.cLayout);
 
-        Log.d(TAG, "onCreate:Before loadAudio");
-        Long pid = getIntent().getLongExtra("playlistId", -1);
+        Log.d(TAG, "onCreate: Before loadAudio");
+        long pid = getIntent().getLongExtra("playlistID", -1);
         if (pid == -1) {
             loadAudio(getApplicationContext());
         } else {
@@ -111,22 +98,17 @@ public class OfflineActivityTry extends AppCompatActivity
         }
 
         if (audioList != null) {
-            adapterSwipe = new MediaAdapterSwipe(OfflineActivityTry.this, audioList);
+            adapterSwipe = new mediaAdapterSwipe(OfflineActivityTry.this, audioList);
             Log.d(TAG, "onCreate: after loadAudio");
-            Collections.sort(audioList, new Comparator<Audio>() {
-                @Override
-                public int compare(Audio audio1, Audio audio2) {
-                    return audio1.getTitle().compareToIgnoreCase(audio2.getTitle());
-                }
-            });
+            audioList.sort((audio1, audio2) -> audio1.getTitle().compareToIgnoreCase(audio2.getTitle()));
         } else {
-            Toast.makeText(OfflineActivityTry.this, "No Songs", Toast.LENGTH_SHORT);
+            Toast.makeText(OfflineActivityTry.this, "No Songs", Toast.LENGTH_SHORT).show();
         }
 
-        int permCode = ContextCompat.checkSelfPermission(
+        int permissionCode = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        if (permCode == PackageManager.PERMISSION_DENIED) {
+        if (permissionCode == PackageManager.PERMISSION_DENIED) {
             Toast.makeText(getApplicationContext(), "denied", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "onCreate Permission Denied");
             Log.d(TAG, "++++++++++++++++++++++++++");
@@ -134,99 +116,78 @@ public class OfflineActivityTry extends AppCompatActivity
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE
             }, 300);
-        } else {
+        } else if(permissionCode == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "onCreate Permission Granted");
             Log.d(TAG, "++++++++++++++++++++++++++++");
             Toast.makeText(getApplicationContext(), "granted", Toast.LENGTH_SHORT).show();
         }
 
         Log.d(TAG, "onCreate: Before rv");
-        rvTrackList = findViewById(R.id.rvTrackList);
-        rvTrackList.setLayoutManager(new LinearLayoutManager(this));
-        mediaAdapter = new MediaAdapter(this, audioList);
-        rvTrackList.setAdapter(mediaAdapter);
         listView.setAdapter(adapterSwipe);
         Log.d(TAG, "onCreate: after rv");
-        adapterSwipe.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void itemClick(int itemId, View view) {
-                adapterSwipe.closeAllItems();
-                switch (view.getId()) {
-                    case R.id.Layout1:
+        adapterSwipe.setOnItemClickListener((itemId, view) -> {
+            adapterSwipe.closeAllItems();
+            switch (view.getId()) {
+                case R.id.Layout1:
                     Log.d(TAG, "onCreate: inside onClick");
-                        Intent i = new Intent(OfflineActivityTry.this, MediaActivity.class);
-                        i.putExtra("songId", itemId);
-                        i.putExtra("audioList", audioList);
-                        startActivity(i);
-                        break;
-                    case R.id.del:
-                        String root = Environment.getExternalStorageDirectory().toString();
-                        String path = audioList.get(itemId).getData();
-                        Toast.makeText(getApplicationContext(), path, Toast.LENGTH_SHORT).show();
-                        File file = new File(path);
-                        Toast.makeText(getApplicationContext(), file.canWrite() + "", Toast.LENGTH_SHORT).show();
-                        Boolean deleted = file.delete();
-                        if (file.exists()) {
-                            try {
-                                file.getCanonicalFile().delete();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    Intent i = new Intent(OfflineActivityTry.this, MediaActivity.class);
+                    i.putExtra("songId", itemId);
+                    i.putExtra("audioList", audioList);
+                    startActivity(i);
+                    break;
+                case R.id.del:
+                    String root = Environment.getExternalStorageDirectory().toString();
+                    String path = audioList.get(itemId).getData();
+                    Toast.makeText(getApplicationContext(), path, Toast.LENGTH_SHORT).show();
+                    File file = new File(path);
+                    Toast.makeText(getApplicationContext(), file.canWrite() + "", Toast.LENGTH_SHORT).show();
+                    boolean deleted = file.delete();
+                    if (file.exists()) {
+                        try {
+                            file.getCanonicalFile().delete();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        Toast.makeText(OfflineActivityTry.this, "del" + deleted, Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.fav:
-                        Toast.makeText(OfflineActivityTry.this, "fav", Toast.LENGTH_SHORT).show();
-                        PlayListHelper.addToPlaylist(OfflineActivityTry.this.getContentResolver(),
-                                audioList.get(itemId).getId(),
-                                PlayListHelper.getPlaylist(getApplicationContext().getContentResolver(), "Favourites"));
-                        break;
-                    case R.id.fbupload:
-                        dialog.setMessage("Uploading to firebase");
-                        dialog.show();
-                        Toast.makeText(getApplicationContext(), "Share", Toast.LENGTH_SHORT).show();
-                        uploadFile(itemId);
-                        break;
-                }
+                    }
+                    Toast.makeText(OfflineActivityTry.this, "del" + deleted, Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.fav:
+                    Toast.makeText(OfflineActivityTry.this, "fav", Toast.LENGTH_SHORT).show();
+                    addToPlaylist(OfflineActivityTry.this.getContentResolver(),
+                            audioList.get(itemId).getId(),
+                            PlayListHelper.getPlaylist(getApplicationContext().getContentResolver(), "Favourites"));
+                    break;
+                case R.id.fbupload:
+                    dialog.setMessage("Uploading to firebase");
+                    dialog.show();
+                    Toast.makeText(getApplicationContext(), "Share", Toast.LENGTH_SHORT).show();
+                    uploadFile(itemId);
+                    break;
             }
         });
 
         tvTotalSongs = findViewById(R.id.tvTotalSongs);
-        tvTotalSongs.setText("Total Songs : " + audioList.size());
+        tvTotalSongs.setText("Total Songs: " + audioList.size());
     }
 
     private void uploadFile(int itemId) {
         final StorageReference filepath = storageReference.child(StorageUtil.uid).child(audioList.get(itemId).getTitle() + ".mp3");
         Uri uri = Uri.fromFile(new File(audioList.get(itemId).getData()));
-        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                dialog.dismiss();
-                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String share = uri.toString();
-                        Intent si = new Intent();
-                        si.setAction(Intent.ACTION_SEND);
-                        si.putExtra(Intent.EXTRA_TEXT, share);
-                        si.setType("text/plain");
-                        startActivity(si);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(OfflineActivityTry.this, "Failed to get downloaded url", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        filepath.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+            dialog.dismiss();
+            filepath.getDownloadUrl().addOnSuccessListener(Uri -> {
+                String share = uri.toString();
+                Intent si = new Intent();
+                si.setAction(Intent.ACTION_SEND);
+                si.putExtra(Intent.EXTRA_TEXT, share);
+                si.setType("text/plain");
+                startActivity(si);
+            }).addOnFailureListener(e -> Toast.makeText(OfflineActivityTry.this, "Failed to get downloaded url", Toast.LENGTH_SHORT).show());
 
-                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Failed" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            dialog.dismiss();
+            Toast.makeText(getApplicationContext(), "Failed" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -255,24 +216,16 @@ public class OfflineActivityTry extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.sortByDuration) {
-            Collections.sort(audioList, new Comparator<Audio>() {
-                @Override
-                public int compare(Audio audio, Audio t1) {
-                    Long a1 = audio.getDuration();
-                    Long a2 = t1.getDuration();
-                    return a1.compareTo(a2);
-                }
+            audioList.sort((audio, t1) -> {
+                Long a1 = audio.getDuration();
+                Long a2 = t1.getDuration();
+                return a1.compareTo(a2);
             });
             item.setChecked(true);
             adapterSwipe.updateMedia(audioList);
             return true;
         } else if (id == R.id.sortByName) {
-            Collections.sort(audioList, new Comparator<Audio>() {
-                @Override
-                public int compare(Audio audio1, Audio audio2) {
-                    return audio1.getTitle().compareToIgnoreCase(audio2.getTitle());
-                }
-            });
+            audioList.sort((audio1, audio2) -> audio1.getTitle().compareToIgnoreCase(audio2.getTitle()));
             item.setChecked(true);
             adapterSwipe.updateMedia(audioList);
             return true;
@@ -296,13 +249,23 @@ public class OfflineActivityTry extends AppCompatActivity
                 String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 Long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                long duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                String album = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                }
+                String artist = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                    artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                }
+                long duration = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                    duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                }
                 //Save to audioList
                 audioList.add(new Audio(id, data, title, album, artist, duration));
             }
         }
+        assert cursor != null;
         cursor.close();
     }
 

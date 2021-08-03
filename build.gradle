@@ -30,6 +30,10 @@ allprojects {
     }
 }
 
+ext {
+    sdkVersion = 30
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
